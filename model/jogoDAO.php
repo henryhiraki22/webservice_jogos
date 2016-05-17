@@ -1,15 +1,15 @@
-<?php
+    <?php
 
 // Aki faremos as funcoes GET, PUT, POST, DELETE;
 class JogoDAO{
     //POST
-    public function insert(Jogo $j){
+    public function insert(Jogo $p){
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
         if ($mysqli->connect_errno) {
             echo "Falha no MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
-        $stmt = $mysqli->prepare("INSERT INTO Jogos(nome,valor,plataforma,genero) VALUE (?,?,?,?)");
-        $stmt->bind_param("sdss",$j->getNome(), $j->getValor(), $j->getPlataforma(), $j->getGenero());
+        $stmt = $mysqli->prepare("INSERT INTO Jogos(nome,valor,plataforma,genero) VALUES(?,?,?,?)");
+        $stmt->bind_param("sdss",$p->getNome(), $p->getValor(), $p->getPlataforma(), $p->getGenero());
         if (!$stmt->execute()) {
             echo "Erro: (" . $stmt->errno . ") " . $stmt->error . "<br>";
         }
@@ -21,7 +21,7 @@ class JogoDAO{
         $stmt = $mysqli->prepare("SELECT * FROM Jogos WHERE id=?");
         $stmt->bind_param("i",$id);
         $stmt->execute();
-        $stmt->bind_result($id,$nome, $valor, $plataforma, $genero);
+        $stmt->bind_result($id, $nome, $valor, $plataforma, $genero);
         $stmt->fetch();
         $jogo = new Jogo($id,$nome,$valor, $plataforma, $genero);
         return $jogo;

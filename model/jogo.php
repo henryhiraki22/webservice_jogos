@@ -2,14 +2,14 @@
 
 class Jogo{
     
-    private $id, $nome, $valor, $plataforma, $categoria;
+    private $id, $nome, $valor, $plataforma, $genero;
     
-    public function __construct($id=0,$nome,$valor,$plataforma,$categoria){
+    public function __construct($id=0,$nome,$valor,$plataforma,$genero){
         $this->id = $id;
         $this->nome = $nome;
         $this->valor = $valor;
         $this->plataforma = $plataforma;
-        $thi->categoria = $categoria;
+        $this->genero = $genero;
     }
     public function getId(){
         return $this->id;
@@ -23,14 +23,9 @@ class Jogo{
     public function getPlataforma(){
         return $this->plataforma;
     }
-    public function getCategoria(){
-        return $this->categoria;
+    public function getGenero(){
+        return $this->genero;
     }
 }
-
-
-
-
-
 
 ?>

@@ -17,16 +17,15 @@ class GeneralResourceGET extends GeneralResource{
         if($arg1 > 0){
             require_once "../model/jogo.php";
             require_once "../model/jogoDAO.php";
-            
             $jd = new jogoDAO();
             $jogo = $jd->buscaJogo($arg1);
-            if($jogo->getId() != null &&  $jogo->getNome() != null && $jogo->getValor() != null && $jogo->getPlataforma() && $jogo->getGenero()){
-                echo json_encode(array("id"=>$jogo->getId(), "nome"=>$jogo->getNome(), "valor"=>$jogo->getValor(),
-                "produto"=>$jogo->getPlataforma(), "genero"=>$jogo->getGenero()));
+            if($jogo->getId() != null &&  $jogo->getNome() != null && $jogo->getValor() != null && $jogo->getPlataforma() && $jogo->getGenero() != null){
+            echo json_encode(array("id"=>$jogo->getId(), "nome"=>$jogo->getNome(), "valor"=>$jogo->getValor(),
+            "plataforma"=>$jogo->getPlataforma(), "genero"=>$jogo->getGenero()));
         //se for adicionar mais coisas ao jogo, adicionar aki...por enquanto temos nome, valor, plataforma e genero.
                 http_response_code(200);
             }else{
-                echo json_encode(array("response"=>"Nao Contem"));
+                echo json_encode(array("response"=>"Nao Possui Registro"));
                 http_response_code(404);
             }
         }else{
@@ -43,7 +42,7 @@ class GeneralResourceOPTIONS extends GeneralResource{
             http_response_code(200); 
         }
     
-    public function getJogo(){
+    public function insereJogo(){
             header('allow: POST, OPTIONS');
             http_response_code(200);
             //nao sei se isso está certo.
@@ -63,14 +62,12 @@ class GeneralResourcePOST extends GeneralResource{
             $jd = new JogoDAO();
             $jd->insert($jogo);
             echo json_encode(array("response"=>"Criado"));
-            http_response_code(500);   
+            http_response_code(202);   
         }else{
-            echo json_encode(array("response"=>"Dados inválidos"));
+            echo json_encode(array("response"=>"Dados invalidos"));
             http_response_code(500);   
         }
     }
-
-
 }
     
 ?>    
