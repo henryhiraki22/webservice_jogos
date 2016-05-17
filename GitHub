@@ -1,0 +1,56 @@
+=============================================================
+    GITHUB | Procedimentos para criar um novo repositório:   
+=============================================================
+
+->Criar um novo respositório no GitHub
+->Entrar na pasta (no localhost ou no C9)
+->No bash:
+git init
+
+->Copiar o endereço HTTPS no repositório:
+Ex.: https://github.com/melissamoreira/teste.git
+
+->No bash:
+git remote add origin (cola o endereço HTTPS)   
+Ex.: git remote add origin https://github.com/melissamoreira/teste.git
+
+-> Bash:
+git status
+->Retorna o status das alterações feitas
+
+-> Bash:
+git add teste.php
+OU:
+git add .
+(O ponto adiciona tudo o que houver na pasta!)
+
+git commit -m "Meu primeiro commit!"
+(Realiza o commit e adiciona uma mensagem especificando (-m))
+
+git push origin1 master
+->Feito isso, será pedido seu username e senha para completar o processo.
+
+----------------------
+O fluxo de produção é:
+----------------------
+git status: Para verificar as alterações (As não adicionadas/commitadas, aparecerão em vermelho)
+git add arquivo.php : Adiciona o arquivo (ou todos, usando o ponto '.')
+git status: Os arquivos adicionados aparecerão em verde!
+git commit -m "Mensagem..." :Commita os arquivos e registra uma mensagem 
+git push origin master  : Envia os arquivos para o repositório
+
+Onde:
+
+origin-> Nome definido via git remote add
+master-> Sua pasta no branch master
+
+------------------------------------
+Clonando um repositório:
+git clone <endereço do repositorio>
+
+------------------------------------
+
+testes
+
+
+
