@@ -26,7 +26,7 @@ class JogoDAO{
         $jogo = new Jogo($id,$nome,$valor, $plataforma, $genero);
         return $jogo;
     }
-    //$stmt->bind_result($col1, $col2);
+    
     public function excluiJogo($id){
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
         $stmt = $mysqli->prepare("DELETE FROM Jogos WHERE id=?");
