@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 // Aki faremos as funcoes GET, PUT, POST, DELETE;
 class JogoDAO{
@@ -36,9 +36,4 @@ class JogoDAO{
     }
 }
 //http://php.net/manual/en/mysqli-stmt.bind-param.php explicação do metodo bind_param
-
-
-
-
-
 ?>
