@@ -36,5 +36,14 @@ curl https://webservice-jogos-henryhiraki22.c9users.io/insereJogo / -v / -X POST
 
 curl https://webservice-jogos-henryhiraki22.c9users.io/insereJogo / -v / -X POST / -H 'content-type:application/json' / -d '{"id":1,"nome":"DarkSouls","valor":250.99,"plataforma":"Playstation4","genero":"FDSP"}'
 
+------------------------------------------------------------------------------
 
+para excluir via curl com id:
+
+curl https://webservice-jogos-henryhiraki22.c9users.io/deletaJogo / -v / -X DELETE / -H 'content-type:application/json' / -d '{"id":1}'
+------------------------------------------------------------------------------
+
+para buscar via curl: 
+
+curl https://webservice-jogos-henryhiraki22.c9users.io/buscaJogo/4;
 
