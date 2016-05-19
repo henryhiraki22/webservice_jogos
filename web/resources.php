@@ -72,14 +72,13 @@ class GeneralResourcePOST extends GeneralResource{
 class GeneralResourceDELETE extends GeneralResource{
         
     public function deletaJogo(){
-         header('content-type: application/json');
+        // header('content-type: application/json');
         if($_SERVER["CONTENT_TYPE"] === "application/json"){
             $json = file_get_contents('php://input');
             $array = json_decode($json,true);
             require_once "../model/jogo.php";
             require_once "../model/jogoDAO.php";
-            //array que retorna as informações, caso adicionar outra coisa relacionada ao jogo, adicionar aki tbm!
-            $jogo = new Jogo($array["id"]);
+            $jogo = new Jogo($array["id"]/*,$array["nome"],$array["valor"],$array["plataforma"], $array["genero"]*/);
             $jd = new jogoDAO();
             $jd->excluiJogo($jogo);
             echo json_encode(array("response"=>"Deletado."));

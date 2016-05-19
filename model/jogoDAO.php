@@ -32,7 +32,7 @@ public function excluiJogo(Jogo $p){
         if ($mysqli->connect_errno) {
             echo "Falha no MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
-        $stmt = $mysqli->prepare("DELETE FROM Jogos WHERE id = ?");
+        $stmt = $mysqli->prepare("DELETE FROM Jogos WHERE id =(?)");
         $stmt->bind_param("i",$p->getId());
         if (!$stmt->execute()) {
             echo "Erro: (" . $stmt->errno . ") " . $stmt->error . "<br>";
