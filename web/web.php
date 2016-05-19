@@ -17,7 +17,8 @@ class Controller{
         $resource->$nomeDoMetodo();
     }
 }
-
+$met = $_DELETE["metodo"];
+$met = $_DELETE["classe"];
 $met = $_POST["metodo"];
 $class = $_POST["classe"];
 $met = $_GET["metodo"];

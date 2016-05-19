@@ -4,7 +4,7 @@ class Jogo{
     
     private $id, $nome, $valor, $plataforma, $genero;
     
-    public function __construct($id=0,$nome,$valor,$plataforma,$genero){
+    public function __construct($id,$nome,$valor,$plataforma,$genero){
         $this->id = $id;
         $this->nome = $nome;
         $this->valor = $valor;

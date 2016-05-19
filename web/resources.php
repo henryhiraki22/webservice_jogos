@@ -57,7 +57,7 @@ class GeneralResourcePOST extends GeneralResource{
             $array = json_decode($json,true);
             require_once "../model/jogo.php";
             require_once "../model/jogoDAO.php";
-            $jogo = new Jogo(0,$array["nome"],$array["valor"],$array["plataforma"], $array["genero"]);
+            $jogo = new Jogo($array["id"],$array["nome"],$array["valor"],$array["plataforma"], $array["genero"]);
             //array que retorna as informações, caso adicionar outra coisa relacionada ao jogo, adicionar aki tbm!
             $jd = new JogoDAO();
             $jd->insert($jogo);
@@ -69,5 +69,25 @@ class GeneralResourcePOST extends GeneralResource{
         }
     }
 }
-    
+class GeneralResourceDELETE extends GeneralResource{
+        
+    public function deletaJogo(){
+         header('content-type: application/json');
+        if($_SERVER["CONTENT_TYPE"] === "application/json"){
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/jogo.php";
+            require_once "../model/jogoDAO.php";
+            //array que retorna as informações, caso adicionar outra coisa relacionada ao jogo, adicionar aki tbm!
+            $jd = new jogoDAO();
+            $jogo = $jd->excluiJogo($arg1);
+            echo json_encode(array("response"=>"Deletado."));
+            http_response_code(202);   
+        }else{
+            echo json_encode(array("response"=>"Dados invalidos"));
+            http_response_code(500);   
+        }
+    }
+}
+
 ?>    
