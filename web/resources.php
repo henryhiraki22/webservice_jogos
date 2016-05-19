@@ -79,8 +79,9 @@ class GeneralResourceDELETE extends GeneralResource{
             require_once "../model/jogo.php";
             require_once "../model/jogoDAO.php";
             //array que retorna as informações, caso adicionar outra coisa relacionada ao jogo, adicionar aki tbm!
+            $jogo = new Jogo($array["id"]);
             $jd = new jogoDAO();
-            $jogo = $jd->excluiJogo($arg1);
+            $jd->excluiJogo($jogo);
             echo json_encode(array("response"=>"Deletado."));
             http_response_code(202);   
         }else{

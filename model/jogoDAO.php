@@ -27,15 +27,18 @@ class JogoDAO{
         return $jogo;
     }
   
-public function excluiJogo($id){
+public function excluiJogo(Jogo $p){
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
+        if ($mysqli->connect_errno) {
+            echo "Falha no MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+        }
         $stmt = $mysqli->prepare("DELETE FROM Jogos WHERE id = ?");
-        $stmt->bind_param("i",$id);
-        $stmt->execute();
-        
+        $stmt->bind_param("i",$p->getId());
+        if (!$stmt->execute()) {
+            echo "Erro: (" . $stmt->errno . ") " . $stmt->error . "<br>";
+        }
+        $stmt->close();
     }
-    
-
 }
 //http://php.net/manual/en/mysqli-stmt.bind-param.php explicação do metodo bind_param
 
