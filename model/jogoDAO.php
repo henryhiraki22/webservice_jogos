@@ -4,7 +4,6 @@
 
 //POST
 class JogoDAO{
-    
     public function insert(Jogo $p){
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
         if ($mysqli->connect_errno) {
@@ -27,6 +26,17 @@ class JogoDAO{
         $stmt->bind_result($id, $nome, $valor, $plataforma, $genero);
         $stmt->fetch();
         $jogo = new Jogo($id,$nome,$valor, $plataforma, $genero);
+        return $jogo;
+    }
+    
+    //LISTA TODOS OS JOGOS
+    public function getAllJogos(){
+        $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
+        $stmt = $mysqli->query("SELECT * FROM Jogos");
+        $jogo = [];
+        for ($i = 0; $jogos = $stmt->fetch_assoc(); $i++){
+            $jogo[$i] = new Jogo($jogos['id'],$jogos['nome'], $jogos['valor'],$jogos['plataforma'],$jogos['genero']);
+        }
         return $jogo;
     }
     
@@ -65,5 +75,10 @@ O bind param, pega o parametro mediante o que vc colocou no banco NOME = VARCHAR
 ID = INT = i;
 Valor = Double = d;
 */
-
 ?>
+
+
+
+
+
+

@@ -33,6 +33,66 @@ class GeneralResourceGET extends GeneralResource{
             http_response_code(500); 
         }
     }
+    //FILTRAR TODOS.
+
+public function listaJogos(){
+    header('content-type: application/json');
+    require_once "../model/jogo.php";
+    require_once "../model/jogoDAO.php";
+    $jd = new JogoDAO();
+    $jogo = $jd->getAllJogos();
+    foreach($jogo as $jogos){
+    $games[] = array("id"=>$jogos->getId(), "nome"=>$jogos->getNome(), "valor"=>$jogos->getValor(), "plataforma"=>$jogos->getPlataforma(), "genero"=>$jogos->getGenero());
+        
+    }if($games == null){
+        echo "Jogo nao encontrado";
+        http_response_code(500);
+    }else{
+        echo json_encode($games);
+        http_response_code(200);
+    }
+}
+    // BUSCA USUARIO.
+     public function buscaUsuario(){
+        //metodo que pega o jogo por um id.
+        $arg1 = $_GET["arg1"];
+        header('content-type: application/json');
+        if($arg1 > 0){
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $ud = new usuarioDAO();
+            $user = $ud->buscaUser($arg1);
+            if($user->getNome() != null){
+            echo json_encode(array("ola", "nome"=>$user->getNome()));
+        //se for adicionar mais coisas ao jogo, adicionar aki...por enquanto temos nome, valor, plataforma e genero.
+                http_response_code(200);
+            }else{
+                echo json_encode(array("response"=>"Nao Possui Registro"));
+                http_response_code(404);
+            }
+        }else{
+            echo json_encode(array("response"=>"Dados invalidos"));
+            http_response_code(500); 
+        }
+    }
+    
+     public function listaUsuarios(){
+      header('content-type: application/json');
+      require_once "../model/usuario.php";
+      require_once "../model/usuarioDAO.php";
+      $us = new UsuarioDAO();
+      $user = $us->getAllUser();
+      foreach($user as $usuarios){
+      $allUsers[] = array("nome"=>$usuarios->getNome(), "login"=>$usuarios->getLogin());
+        
+      }if($allUsers == null){
+          echo "Usuario nao encontrado";
+          http_response_code(500);
+          }else{
+                echo json_encode($allUsers);
+                http_response_code(200);
+         }
+    }
 }
 
 class GeneralResourceOPTIONS extends GeneralResource{
@@ -41,14 +101,34 @@ class GeneralResourceOPTIONS extends GeneralResource{
             header('allow: GET, OPTIONS');
             http_response_code(200); 
         }
+    public function buscaUsuario(){
+            header('allow: GET, OPTIONS');
+            http_response_code(200);
+    }    
     
     public function insereJogo(){
             header('allow: POST, OPTIONS');
             http_response_code(200);
             //nao sei se isso está certo.
-        }        
+    }
+    public function insereUsuario(){
+            header('allow: GET, OPTIONS');
+            http_response_code(200);
+    }
     public function deletaJogo(){
         header('allow: DELETE,OPTIONS');
+        http_response_code(200);
+    }
+    public function deletaUsuario(){
+        header('allow: DELETE,OPTIONS');
+        http_response_code(200);
+    }
+    public function atualizaJogo(){
+        header('allow: GET, OPTIONS');
+        http_response_code(200);
+    }
+    public function atualizaUsuario(){
+        header('allow: GET, OPTIONS');
         http_response_code(200);
     }
 }
@@ -73,6 +153,23 @@ class GeneralResourcePOST extends GeneralResource{
             http_response_code(500);   
         }
     }
+    //inserir novo usuario.
+    public function insereUsuario(){
+        if($_SERVER["CONTENT_TYPE"] === "application/json"){
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $usuario = new Usuario($array["nome"], $array["login"], $array["senha"]);
+            $ud = new UsuarioDAO();
+            $ud->insereUser($usuario);
+            echo json_encode(array("response"=>"Criado"));
+            http_response_code(202);
+        }else{
+            echo json_encode(array("response"=>"Dados Invalidos"));
+            http_response_code(500);
+        }
+    }
 }
 class GeneralResourceDELETE extends GeneralResource{
         
@@ -95,6 +192,25 @@ class GeneralResourceDELETE extends GeneralResource{
             http_response_code(500);   
         }
     }
+    // DELETA USUARIO PELO NOME, via POST.
+    public function deletaUsuario(){
+        header('content-type: application/json');
+        if($_SERVER['CONTENT_TYPE'] === "application/json"){
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $user = new Usuario($array["nome"],$array["login"],$array["senha"]);
+            //nessa opcao ele deleta pelo nome, tive que tirar o id passado no array.
+            $ud = new usuarioDAO();
+            $ud->deletaUser($user);
+            echo json_encode(array("response" => "Deletado."));
+            http_response_code(200);
+        }else{
+            echo json_encode(array("response"=>"Dados Invalidos"));
+            http_response_code(500);
+        }
+    }
 }
 
 class GeneralResourcePUT extends GeneralResource{
@@ -115,5 +231,23 @@ class GeneralResourcePUT extends GeneralResource{
             http_response_code(500);
         }
     }
+        //ATUALIZA USUARIO VIA POST.
+     public function atualizaUsuario(){
+        if($_SERVER["CONTENT_TYPE"] === 'application/json'){
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $user = new Usuario($array["nome"],$array["login"], $array["senha"], $array["id"]);
+            $ud = new UsuarioDAO();
+            $ud -> atualizaUser($user);
+            echo json_encode(array("response"=>"Atualizado"));
+            http_response_code(200);
+        }else{
+            echo json_encode(array("response"=>"Dados Invalidos"));
+            http_response_code(500);
+        }
+    }
 }
+//cannarozzo
 ?>    

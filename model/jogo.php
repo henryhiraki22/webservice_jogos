@@ -10,7 +10,7 @@ class Jogo{
         $this->valor = $valor;
         $this->plataforma = $plataforma;
         $this->genero = $genero;
-    }
+    }   
     public function getId(){
         return $this->id;
     }
