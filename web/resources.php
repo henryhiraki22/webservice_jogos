@@ -43,7 +43,6 @@ public function listaJogos(){
     $jogo = $jd->getAllJogos();
     foreach($jogo as $jogos){
     $games[] = array("id"=>$jogos->getId(), "nome"=>$jogos->getNome(), "valor"=>$jogos->getValor(), "plataforma"=>$jogos->getPlataforma(), "genero"=>$jogos->getGenero());
-        
     }if($games == null){
         echo "Jogo nao encontrado";
         http_response_code(500);
@@ -53,30 +52,30 @@ public function listaJogos(){
     }
 }
     // BUSCA USUARIO.
-     public function buscaUsuario(){
-        //metodo que pega o jogo por um id.
-        $arg1 = $_GET["arg1"];
-        header('content-type: application/json');
-        if($arg1 > 0){
-            require_once "../model/usuario.php";
-            require_once "../model/usuarioDAO.php";
-            $ud = new usuarioDAO();
-            $user = $ud->buscaUser($arg1);
+public function buscaUsuario(){
+    //metodo que pega o jogo por um id.
+    $arg1 = $_GET["arg1"];
+    header('content-type: application/json');
+    if($arg1 > 0){
+        require_once "../model/usuario.php";
+        require_once "../model/usuarioDAO.php";
+        $ud = new usuarioDAO();
+        $user = $ud->buscaUser($arg1);
             if($user->getNome() != null){
-            echo json_encode(array("ola", "nome"=>$user->getNome()));
+                echo json_encode(array("ola", "nome"=>$user->getNome()));
         //se for adicionar mais coisas ao jogo, adicionar aki...por enquanto temos nome, valor, plataforma e genero.
                 http_response_code(200);
-            }else{
-                echo json_encode(array("response"=>"Nao Possui Registro"));
-                http_response_code(404);
-            }
+                }else{
+                    echo json_encode(array("response"=>"Nao Possui Registro"));
+                    http_response_code(404);
+                }
         }else{
             echo json_encode(array("response"=>"Dados invalidos"));
             http_response_code(500); 
         }
     }
     
-     public function listaUsuarios(){
+public function listaUsuarios(){
       header('content-type: application/json');
       require_once "../model/usuario.php";
       require_once "../model/usuarioDAO.php";
@@ -84,7 +83,6 @@ public function listaJogos(){
       $user = $us->getAllUser();
       foreach($user as $usuarios){
       $allUsers[] = array("nome"=>$usuarios->getNome(), "login"=>$usuarios->getLogin());
-        
       }if($allUsers == null){
           echo "Usuario nao encontrado";
           http_response_code(500);
@@ -161,16 +159,78 @@ class GeneralResourcePOST extends GeneralResource{
             require_once "../model/usuario.php";
             require_once "../model/usuarioDAO.php";
             $usuario = new Usuario($array["nome"], $array["login"], $array["senha"]);
+            $key = $array["senha"];
             $ud = new UsuarioDAO();
             $ud->insereUser($usuario);
-            echo json_encode(array("response"=>"Criado"));
+            echo json_encode(array("response"=>"sucesso"));
             http_response_code(202);
-        }else{
+        }else if($key == $key){
+            echo "por favor digite uma senha";
+        }
+        else{
             echo json_encode(array("response"=>"Dados Invalidos"));
             http_response_code(500);
         }
     }
+    
+    //login do usuario ou ADM.
+    
+public function autenticar(){
+            header('content-type: application/json');
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $us = new Usuario($array["nome"],$array["login"],$array["senha"]);
+            $ud = new UsuarioDAO();
+            $loginCorreto = $ud->authUser($us);
+        if($loginCorreto === false){
+            echo json_encode(array("response"=>"Dados invalidos"));
+     } else{
+            echo json_encode(array("response"=>"Login Correto"));
+            require_once "JWT.php";
+            $token = array();
+            $token = $loginCorreto;
+            header("content-type: application/json");
+            $enc = JWT::encode($token, 'chave');
+            echo json_encode(array("token: " => $enc)); 
+            $token1 = JWT::decode($enc, 'chave'); 
+            echo json_encode(array("Ola" => $token1));
+          }
+            
+      }
+public function autorizar(){
+       header('content-type: application/json');
+        require_once "JWT.php";
+        $auth = getallheaders()["authorization"];
+        if($auth == ""){
+            echo "Erro";
+        }else{
+            $json = file_get_contents('php://input');
+            $array = json_decode($json,true);
+            require_once "../model/usuario.php";
+            require_once "../model/usuarioDAO.php";
+            $us = new Usuario($array["id"],$array["nome"],$array["login"],$array["senha"]);
+            $ud = new UsuarioDAO();
+            $loginCorreto = $ud->authUser($us);
+            $token = $loginCorreto;
+            $nome = explode(" ", $auth)[0];
+            $token = explode(" ", $auth)[1];
+            if($nome === "Bearer"){
+                $token1 = JWT::decode($token, 'chave');
+                echo json_encode(array("id" => $token1));
+                if($token1 === $loginCorreto){
+                    echo json_encode(array("resp" =>"OK"));
+                }else{
+                    echo "Erro 3";
+                }
+            }else{
+                echo "Erro 2";                
+            }
+        }
+    }
 }
+
 class GeneralResourceDELETE extends GeneralResource{
         
     public function deletaJogo(){
@@ -249,5 +309,4 @@ class GeneralResourcePUT extends GeneralResource{
         }
     }
 }
-//cannarozzo
 ?>    

@@ -34,8 +34,8 @@ class UsuarioDAO{
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
         $stmt = $mysqli->query("SELECT * FROM User");
         $user = [];
-        for ($i = 0; $usuario = $stmt->fetch_assoc(); $i++){
-            $user[$i] = new Usuario($usuario['id'], $usuario['nome'], $usuario['login'], $usuario['senha']);
+        for ($i = 0; $usuario = $stmt->fetch_assoc(); $i++){ // fetch_assoc retorna uma matriz associativa.
+            $user[$i] = new Usuario($usuario['nome'], $usuario['login'], $usuario['senha']);
         }
         return $user;
     }
@@ -66,22 +66,20 @@ public function atualizaUser(Usuario $u){
      echo "Erro: (" . $stmt->errno . ") " . $stmt->error . "<br>";
     }
     $stmt->close();
-    }
-    
-     public function authUser($login,$senha){
-        $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
-        $stmt = $mysqli->prepare("SELECT id FROM User WHERE login=? AND senha=?");
-        $stmt->bind_param("ss",$login,$senha);
+}
+
+public function authUser(Usuario $a){
+ $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
+ $stmt = $mysqli->prepare("SELECT nome FROM User WHERE login=(?) AND senha=(?)");
+        $stmt->bind_param("ss",$a->getLogin(),$a->getSenha());
         $stmt->execute();
-        $stmt->bind_result($id);
+        $stmt->bind_result($nome);
         $stmt->fetch();
-        if($id > 0){
-            //ACHEI O USUARIO E O LOGIN E SENHA
-            //ESTAO CORRETAS
-            return true;
-        }else{
-            //USUARIO OU SENHA INVALIDOS
+        if($nome === null){
             return false;
+        }else{
+            return $nome;
+    
         }
     }
 }
