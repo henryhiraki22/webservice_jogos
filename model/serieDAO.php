@@ -2,7 +2,7 @@
 
 class SerieDAO{
     //POST
-    public function insereSerie(Serie $p){
+    public function insertSerie(Serie $p){
         $mysqli = new mysqli("127.0.0.1", "henryhiraki22", "", "trabalho");
         if ($mysqli->connect_errno) {
             echo "Falha no MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
