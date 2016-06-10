@@ -146,9 +146,6 @@ curl https://webservice-jogos-henryhiraki22.c9users.io/deletaLivro / -v / -X DEL
 
 <h2>TOKEN</h2>
 
-<p>Utilizamos o JWT, verificamos se o login e a senha , caso estiver certo ele gera um token. Fizemos com intenção de 
-simular uma compra, contudo infelizmente, não foi possivel.</p>
-
 <p>Método autenticar</p>
 
 ```
